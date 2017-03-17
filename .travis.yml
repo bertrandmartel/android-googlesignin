@@ -8,8 +8,11 @@ sudo: false
 android:
   components:
     - tools
-    - android-25
+    - platform-tools
+    - tools
     - build-tools-25.0.2
+    - android-25
+    - extra-google-m2repository
     - extra-android-m2repository
 
 cache: false
