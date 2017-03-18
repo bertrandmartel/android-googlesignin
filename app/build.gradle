@@ -12,13 +12,18 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
+        debug {
+        }
+
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    productFlavors {
+
         dev {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -26,17 +31,16 @@ android {
 def build_param = "${build}";
 
 if (build_param != "dev") {
-    //exclude dev
+    //exclude production build
     android.variantFilter { variant ->
-        if (variant.getFlavors().get(0).name.equals('dev')) {
+        if (variant.buildType.name.equals('dev')) {
             variant.setIgnore(true);
         }
     }
-}
-else{
-    //exclude all but dev
+} else {
+    //exclude all except production build
     android.variantFilter { variant ->
-        if (!variant.getFlavors().get(0).name.equals('dev')) {
+        if (!variant.buildType.name.equals('dev')) {
             variant.setIgnore(true);
         }
     }
