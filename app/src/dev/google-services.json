@@ -15,6 +15,14 @@
         {
           "client_id": "",
           "client_type": 3
+        },
+        {
+          "client_id": "",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.bmartel.googlesignin",
+            "certificate_hash": ""
+          }
         }
       ],
       "api_key": [
@@ -24,7 +32,10 @@
       ],
       "services": {
         "analytics_service": {
-          "status": 1
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": ""
+          }
         },
         "appinvite_service": {
           "status": 1,

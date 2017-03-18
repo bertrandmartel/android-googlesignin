@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -38,10 +40,15 @@ public class SignInActivity extends AppCompatActivity implements
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
 
+    private Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
 
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
@@ -73,6 +80,12 @@ public class SignInActivity extends AppCompatActivity implements
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         // [END customize_button]
+
+        mTracker.setScreenName("SigninInActivity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        Intent intent = new Intent(SignInActivity.this, RegistrationIntentService.class);
+        startService(intent);
     }
 
     @Override
@@ -184,6 +197,14 @@ public class SignInActivity extends AppCompatActivity implements
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mProgressDialog != null) {
+            mProgressDialog.cancel();
         }
     }
 
